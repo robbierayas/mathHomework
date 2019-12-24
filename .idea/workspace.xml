@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="25231797-8408-4b4a-8333-b2fa8fe16a7f" name="Default Changelist" comment="" />
+    <list default="true" id="25231797-8408-4b4a-8333-b2fa8fe16a7f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,7 +40,7 @@
     <splitter split-orientation="horizontal" split-proportion="0.5152672">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/mathHomework/models/SHA256.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="275">
@@ -45,6 +50,27 @@
                     <element signature="e#1925#2195#0" />
                     <element signature="e#2288#2368#0" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/README.md">
+              <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+                <state split_layout="SPLIT">
+                  <first_editor relative-caret-position="45">
+                    <caret line="3" column="3" lean-forward="true" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
+                  </first_editor>
+                  <second_editor />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/.gitignore">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="15">
+                  <caret line="1" column="5" lean-forward="true" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="5" />
                 </state>
               </provider>
             </entry>
@@ -65,7 +91,7 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/test/java/mathHomework/models/SHA256Test.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="240">
+                <state relative-caret-position="-120">
                   <caret line="16" column="156" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="156" />
                   <folding>
                     <element signature="imports" expanded="true" />
@@ -110,6 +136,9 @@
       <replace>&quot;, &quot;</replace>
     </replaceStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -135,6 +164,8 @@
         <option value="$PROJECT_DIR$/src/main/java/mathHomework/utils/BitwiseFunction.java" />
         <option value="$PROJECT_DIR$/src/test/java/mathHomework/models/SHA256Test.java" />
         <option value="$PROJECT_DIR$/src/main/java/mathHomework/models/SHA256.java" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -151,6 +182,7 @@
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -273,6 +305,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT" />
@@ -486,7 +519,7 @@
       <workItem from="1561308161450" duration="26725000" />
       <workItem from="1561453013297" duration="3576000" />
       <workItem from="1573546950456" duration="937000" />
-      <workItem from="1576486143939" duration="39472000" />
+      <workItem from="1576486143939" duration="39950000" />
     </task>
     <servers />
   </component>
@@ -523,7 +556,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="92773000" />
+    <option name="totallyTimeSpent" value="93251000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -536,8 +569,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="-2" width="1924" height="1052" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49371633" visible="true" weight="0.1629393" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49371633" visible="true" weight="0.1629393" />
       <window_info id="Structure" order="1" sideWeight="0.50628364" side_tool="true" weight="0.18636848" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -547,7 +581,7 @@
       <window_info id="Learn" order="7" weight="0.32960597" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946752" weight="0.32901832" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.48296058" visible="true" weight="0.3106796" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.48296058" weight="0.31101513" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.48455805" weight="0.37756202" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -555,10 +589,10 @@
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49893504" weight="0.32901832" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection Results" order="9" sideWeight="0.49946752" weight="0.32901832" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5170394" side_tool="true" visible="true" weight="0.3106796" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5005325" side_tool="true" visible="true" weight="0.32937366" />
       <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.48828542" weight="0.32901832" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
-      <window_info anchor="bottom" id="Version Control" order="13" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="13" sideWeight="0.49946752" visible="true" weight="0.32937366" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -881,7 +915,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/mathHomework/models/SHA256Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
+        <state relative-caret-position="-120">
           <caret line="16" column="156" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="156" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -898,6 +932,23 @@
             <element signature="e#1925#2195#0" />
             <element signature="e#2288#2368#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="45">
+            <caret line="3" column="3" lean-forward="true" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="5" lean-forward="true" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="5" />
         </state>
       </provider>
     </entry>
