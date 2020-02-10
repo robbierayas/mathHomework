@@ -1,4 +1,16 @@
 -------------------------------------------------------------------------------
 Test set: mathHomework.models.SHA256Test
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 s - in mathHomework.models.SHA256Test
+Tests run: 6, Failures: 2, Errors: 1, Skipped: 0, Time elapsed: 0.02 s <<< FAILURE! - in mathHomework.models.SHA256Test
+testHashComputation  Time elapsed: 0 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: [B@5bfbf16f<[]> but was: [B@25af5db5<[]>
+	at mathHomework.models.SHA256Test.testHashComputation(SHA256Test.java:49)
+
+testPreprocessing  Time elapsed: 0.003 s  <<< ERROR!
+java.lang.ArrayIndexOutOfBoundsException: -1
+	at mathHomework.models.SHA256Test.testPreprocessing(SHA256Test.java:41)
+
+testSHA256  Time elapsed: 0.001 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <f6c4d6736f912ffebe65fb1497aac2a111d037883f39b5d72ea0d39f216ed368> but was: <>
+	at mathHomework.models.SHA256Test.testSHA256(SHA256Test.java:35)
+

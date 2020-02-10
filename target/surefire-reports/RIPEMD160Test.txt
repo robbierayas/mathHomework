@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: RIPEMD160Test
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0 s <<< FAILURE! - in RIPEMD160Test
-testRIPEMD160  Time elapsed: 0 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <> but was: <f3cd5ddd30ad4d28f13cf195786f2e95e8914b22>
-	at RIPEMD160Test.testRIPEMD160(RIPEMD160Test.java:10)
-

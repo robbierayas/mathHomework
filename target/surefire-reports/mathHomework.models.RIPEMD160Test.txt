@@ -1,20 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: mathHomework.models.RIPEMD160Test
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 2, Errors: 2, Skipped: 0, Time elapsed: 0.048 s <<< FAILURE! - in mathHomework.models.RIPEMD160Test
-testProcessRound  Time elapsed: 0.015 s  <<< ERROR!
-java.lang.NullPointerException
-	at mathHomework.models.RIPEMD160Test.testProcessRound(RIPEMD160Test.java:39)
-
-testRIPEMD160  Time elapsed: 0.015 s  <<< ERROR!
-java.lang.NumberFormatException: For input string: "73d6c4f6"
-	at mathHomework.models.RIPEMD160Test.testRIPEMD160(RIPEMD160Test.java:16)
-
-testCompress  Time elapsed: 0.008 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: array contents differ at index [1], expected: <cc2aa403> but was: <c3db2e11>
-	at mathHomework.models.RIPEMD160Test.testCompress(RIPEMD160Test.java:59)
-
-testAddOutput  Time elapsed: 0.003 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <f3cd5ddd30ad4d28f13cf195786f2e95e8914b22> but was: <null>
-	at mathHomework.models.RIPEMD160Test.testAddOutput(RIPEMD160Test.java:78)
-
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s - in mathHomework.models.RIPEMD160Test

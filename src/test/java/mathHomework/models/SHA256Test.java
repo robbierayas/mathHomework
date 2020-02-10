@@ -3,12 +3,12 @@ package mathHomework.models;
 import mathHomework.utils.BitwiseFunction;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SHA256Test {
     @Test
@@ -38,21 +38,25 @@ class SHA256Test {
     @Test
     public void testPreprocessing(){
         SHA256 sha256= new SHA256();
-        byte[][] result = sha256.preprocessing("");
-        assertEquals(new byte[][]{},result);
+        BigInteger[][] expected = new BigInteger[][]{new BigInteger[]{new BigInteger("1633845248"),new BigInteger("0"),new BigInteger("0"),new BigInteger("0"),
+                new BigInteger("0"),new BigInteger("0"),new BigInteger("0"),new BigInteger("0"),
+                new BigInteger("0"),new BigInteger("0"),new BigInteger("0"),new BigInteger("0"),
+                new BigInteger("0"),new BigInteger("0"),new BigInteger("0"),new BigInteger("16")}};
+        BigInteger[][] result = sha256.preprocessing("ab");
+        assertArrayEquals((Object[][])expected,(Object[][])result);
     }
 
     @Test
     public void testHashComputation(){
         SHA256 sha256= new SHA256();
-        byte[] result = sha256.hashComputation(new byte[][]{});
-        assertEquals(new byte[]{},result);
+        BigInteger[] result = sha256.hashComputation(new BigInteger[][]{});
+        assertEquals(new BigInteger[]{},result);
     }
 
     @Test
     public void testAddOutput(){
         SHA256 sha256= new SHA256();
-        String result = sha256.addOutput(new byte[]{});
+        String result = sha256.addOutput(new BigInteger[]{});
         assertEquals("",result);
     }
 
