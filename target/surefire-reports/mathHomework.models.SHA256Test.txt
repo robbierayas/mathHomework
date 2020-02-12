@@ -1,16 +1,32 @@
 -------------------------------------------------------------------------------
 Test set: mathHomework.models.SHA256Test
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 2, Errors: 1, Skipped: 0, Time elapsed: 0.02 s <<< FAILURE! - in mathHomework.models.SHA256Test
-testHashComputation  Time elapsed: 0 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: [B@5bfbf16f<[]> but was: [B@25af5db5<[]>
-	at mathHomework.models.SHA256Test.testHashComputation(SHA256Test.java:49)
+Tests run: 12, Failures: 6, Errors: 1, Skipped: 0, Time elapsed: 0.138 s <<< FAILURE! - in mathHomework.models.SHA256Test
+testLowerSigma0  Time elapsed: 0.052 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <10742657136> but was: <1074267136>
+	at mathHomework.models.SHA256Test.testLowerSigma0(SHA256Test.java:83)
 
-testPreprocessing  Time elapsed: 0.003 s  <<< ERROR!
-java.lang.ArrayIndexOutOfBoundsException: -1
-	at mathHomework.models.SHA256Test.testPreprocessing(SHA256Test.java:41)
+testLowerSigma1  Time elapsed: 0.003 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <107442267136> but was: <1074267136>
+	at mathHomework.models.SHA256Test.testLowerSigma1(SHA256Test.java:90)
 
-testSHA256  Time elapsed: 0.001 s  <<< FAILURE!
+testHashComputation  Time elapsed: 0.005 s  <<< ERROR!
+java.lang.ArrayIndexOutOfBoundsException: Index 0 out of bounds for length 0
+	at mathHomework.models.SHA256Test.testHashComputation(SHA256Test.java:54)
+
+testUpperSigma1  Time elapsed: 0.002 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <107422467136> but was: <1074267136>
+	at mathHomework.models.SHA256Test.testUpperSigma1(SHA256Test.java:76)
+
+testMajority  Time elapsed: 0.001 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <10742671136> but was: <1074267136>
+	at mathHomework.models.SHA256Test.testMajority(SHA256Test.java:104)
+
+testChoice  Time elapsed: 0.002 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <10742671136> but was: <1074267136>
+	at mathHomework.models.SHA256Test.testChoice(SHA256Test.java:97)
+
+testSHA256  Time elapsed: 0.022 s  <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <f6c4d6736f912ffebe65fb1497aac2a111d037883f39b5d72ea0d39f216ed368> but was: <>
-	at mathHomework.models.SHA256Test.testSHA256(SHA256Test.java:35)
+	at mathHomework.models.SHA256Test.testSHA256(SHA256Test.java:36)
 

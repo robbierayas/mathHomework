@@ -92,31 +92,31 @@ public class SHA256 {
     Map<String, BigInteger> hashComputation(BigInteger[][] preprocessedMessage) {
         Map<String, BigInteger> previousRegisterValues = SHA256Constants.H_initial;
         for (int i=0; i<numberOfBlocks; i++) {
-            BigInteger[] W = new BigInteger[64];
-
-            // 1 - prepare message schedule 'W'
-            for (int t=0;  t<16; t++){
-                W[t] = preprocessedMessage[i][t];
-            }
-            for (int t=16; t<64; t++) {
-                W[t] = (lowerSigma1(W[t-2]).add(W[t-7]).add(lowerSigma0(W[t-15]).add(W[t-16])));//.shiftRight(0);
-            }
-
+            BigInteger[] W = prepareMessageSchedule(i, preprocessedMessage);
             // 2 - initialise working variables a, b, c, d, e, f, g, h with previous hash value
                     //done above
 
             // 3 - main loop (note '>>> 0' for 'addition modulo 2^32')
             Map<String, BigInteger> hashValues = null;
-            for(int t=0;t<64;t++) {
+            for (int t=0;t<64;t++) {
                 hashValues = processRound(previousRegisterValues, W,t);
             }
             previousRegisterValues = computeIntermediateHash(previousRegisterValues, hashValues);
         }
-//
-//        /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
-//
-//    }
         return previousRegisterValues;
+    }
+
+    private BigInteger[] prepareMessageSchedule(int i, BigInteger[][] preprocessedMessage) {
+        BigInteger[] W = new BigInteger[64];
+
+        // 1 - prepare message schedule 'W'
+        for (int t=0;  t<16; t++){
+            W[t] = preprocessedMessage[i][t];
+        }
+        for (int t=16; t<64; t++) {
+            W[t] = (lowerSigma1(W[t-2]).add(W[t-7]).add(lowerSigma0(W[t-15]).add(W[t-16])));//.shiftRight(0);
+        }
+        return W;
     }
 
     @VisibleForTesting
@@ -134,7 +134,7 @@ public class SHA256 {
         register[2] = registerValues.get("b");
         register[1] = registerValues.get("a");
         register[0] = T1.add(T2);
-        registerValues =Stream.of(new Object[][] {
+        registerValues = Stream.of(new Object[][] {
                 { "a", register[0] },
                 { "b", register[1] },
                 { "c", register[2] },
@@ -148,7 +148,7 @@ public class SHA256 {
     }
 
     Map<String, BigInteger> computeIntermediateHash(Map<String, BigInteger> registerValues, Map<String, BigInteger> hashValues){
-        registerValues =Stream.of(new Object[][] {
+        registerValues = Stream.of(new Object[][] {
                 { "a", registerValues.get("a").add(hashValues.get("a"))},
                 { "b", registerValues.get("b").add(hashValues.get("b"))},
                 { "c", registerValues.get("c").add(hashValues.get("c"))},
@@ -174,7 +174,14 @@ public class SHA256 {
 
     @VisibleForTesting
     String addOutput(Map<String, BigInteger> encodedhash) {
-
+        String outputString = "";
+        for (BigInteger h : encodedhash.values()){
+            // convert H0..H7 to hex strings (with leading zeros)
+            String hString = h.toString(16);
+            while(hString.length() < 8)
+                hString = "0" + hString;
+            outputString += hString;
+        }
 ////        ///////addOutput
 //        // convert H0..H7 to hex strings (with leading zeros)
 //        for (let h=0; h<H.length; h++) H[h] = ('00000000'+H[h].toString(16)).slice(-8);
@@ -183,7 +190,7 @@ public class SHA256 {
 //        const separator = opt.outFormat=='hex-w' ? ' ' : '';
 //
 //        return H.join(separator);
-        return "";
+        return outputString;
     }
 
     //TODO Logical Function4.1.2

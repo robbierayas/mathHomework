@@ -1,9 +1,5 @@
 package mathHomework.models;
 
-
-import sun.misc.Unsafe;
-
-import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 
 import static java.lang.Long.SIZE;
@@ -11,20 +7,6 @@ import static java.lang.Long.SIZE;
 //https://gist.github.com/Exerosis/3c024915bfd8d0c9a9f94640ffa32b30
 public class BitBuffer {
     private static final byte[] MASKS = new byte[SIZE];
-    private static final Unsafe UNSAFE;
-
-    static {
-        for (int i = 0; i < MASKS.length; i++)
-            MASKS[i] = (byte) (Math.pow(2, i) - 1);
-
-        try {
-            final Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-            theUnsafe.setAccessible(true);
-            UNSAFE = (Unsafe) theUnsafe.get(null);
-        } catch (Exception reason) {
-            throw new RuntimeException(reason);
-        }
-    }
 
 
     private final ByteBuffer bytes;

@@ -1,8 +1,4 @@
-mathHomework/utils/BitwiseFunction.class
-mathHomework/models/SHA256Constants.class
-mathHomework/models/SHA256.class
 mathHomework/models/RIPEMD160Constants.class
-mathHomework/models/RIPEMD160.class
 mathHomework/models/Address.class
 mathHomework/controllers/MainController.class
 mathHomework/models/EncryptionKey.class
