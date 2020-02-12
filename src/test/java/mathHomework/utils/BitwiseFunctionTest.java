@@ -82,6 +82,11 @@ public class BitwiseFunctionTest {
     @Test
     public void testCyclicRightShift(){
         BigInteger result = BitwiseFunction.cyclicRightShift(new BigInteger("9fcf3c9c",16),32,8);
+        assertEquals(new BigInteger("9c9fcf3c",16),result);
+    }
+    @Test
+    public void testCyclicLeftShift(){
+        BigInteger result = BitwiseFunction.cyclicLeftShift(new BigInteger("9fcf3c9c",16),32,8);
         assertEquals(new BigInteger("cf3c9c9f",16),result);
     }
 

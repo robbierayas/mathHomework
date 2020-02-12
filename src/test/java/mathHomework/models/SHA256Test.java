@@ -4,6 +4,7 @@ import mathHomework.utils.BitwiseFunction;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -49,15 +50,58 @@ class SHA256Test {
     @Test
     public void testHashComputation(){
         SHA256 sha256= new SHA256();
-        BigInteger[] result = sha256.hashComputation(new BigInteger[][]{});
+        sha256.numberOfBlocks=1;
+        Map<String, BigInteger> result = sha256.hashComputation(new BigInteger[][]{});
         assertEquals(new BigInteger[]{},result);
     }
 
     @Test
     public void testAddOutput(){
         SHA256 sha256= new SHA256();
-        String result = sha256.addOutput(new BigInteger[]{});
+        String result = sha256.addOutput(new HashMap<String, BigInteger>());
         assertEquals("",result);
+    }
+
+    @Test
+    public void testUpperSigma0(){
+        SHA256 sha256= new SHA256();
+        BigInteger result = sha256.upperSigma0(new BigInteger("1"));
+        assertEquals(new BigInteger("1074267136"),result);
+    }
+
+    @Test
+    public void testUpperSigma1(){
+        SHA256 sha256= new SHA256();
+        BigInteger result = sha256.upperSigma1(new BigInteger("1"));
+        assertEquals(new BigInteger("107422467136"),result);
+    }
+
+    @Test
+    public void testLowerSigma0(){
+        SHA256 sha256= new SHA256();
+        BigInteger result = sha256.lowerSigma0(new BigInteger("1"));
+        assertEquals(new BigInteger("10742657136"),result);
+    }
+
+    @Test
+    public void testLowerSigma1(){
+        SHA256 sha256= new SHA256();
+        BigInteger result = sha256.lowerSigma1(new BigInteger("1"));
+        assertEquals(new BigInteger("107442267136"),result);
+    }
+
+    @Test
+    public void testChoice(){
+        SHA256 sha256= new SHA256();
+        BigInteger result = sha256.choice(new BigInteger("1"),new BigInteger("1"),new BigInteger("1"));
+        assertEquals(new BigInteger("10742671136"),result);
+    }
+
+    @Test
+    public void testMajority(){
+        SHA256 sha256= new SHA256();
+        BigInteger result = sha256.majority(new BigInteger("1"),new BigInteger("1"),new BigInteger("1"));
+        assertEquals(new BigInteger("10742671136"),result);
     }
 
 

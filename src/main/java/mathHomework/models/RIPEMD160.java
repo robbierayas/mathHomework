@@ -143,12 +143,12 @@ public class RIPEMD160 {
 //        BigInteger ax1=aOut.add(X).and(RIPEMD160Constants.MASK);
 //        BigInteger ak=aOut.add(X).and(RIPEMD160Constants.MASK).add(K).and(RIPEMD160Constants.MASK);
 
-//        aOut=cyclicRightShift(aOut.add(X).and(RIPEMD160Constants.MASK).add(K).and(RIPEMD160Constants.MASK),32,s);
-        aOut=BitwiseFunction.cyclicRightShift(aOut.add(X).and(RIPEMD160Constants.MASK).add(K).and(RIPEMD160Constants.MASK),32,s);
+//        aOut=cyclicLeftShift(aOut.add(X).and(RIPEMD160Constants.MASK).add(K).and(RIPEMD160Constants.MASK),32,s);
+        aOut=BitwiseFunction.cyclicLeftShift(aOut.add(X).and(RIPEMD160Constants.MASK).add(K).and(RIPEMD160Constants.MASK),32,s);
         aOut=aOut.add(e).and(RIPEMD160Constants.MASK);
 
         //calculate C
-        BigInteger cOut=BitwiseFunction.cyclicRightShift(c,32,10).mod(RIPEMD160Constants.MASK);
+        BigInteger cOut=BitwiseFunction.cyclicLeftShift(c,32,10).mod(RIPEMD160Constants.MASK);
 
         //set values
         BigInteger[] output=new BigInteger[5];

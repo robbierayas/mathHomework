@@ -122,11 +122,18 @@ public class BitwiseFunction {
         return Integer.toHexString(Integer.rotateLeft(new BigInteger(input,16).intValue(),shift));
     }
 
-    public static BigInteger cyclicRightShift(BigInteger n, int L, int k) {
+    public static BigInteger cyclicLeftShift(BigInteger n, int L, int k) {
         return n.shiftLeft(k)
                 .or(n.shiftRight(L - k))
                 .and(allOnes(L));
     }
+
+    public static BigInteger cyclicRightShift(BigInteger n, int L, int k) {
+        return n.shiftRight(k)
+                .or(n.shiftLeft(L - k))
+                .and(allOnes(L));
+    }
+
     @VisibleForTesting
     static BigInteger allOnes(int L) {
         return BigInteger.ZERO

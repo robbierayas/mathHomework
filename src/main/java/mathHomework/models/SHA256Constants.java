@@ -20,8 +20,18 @@ public final class SHA256Constants {
             "748f82ee", "78a5636f", "84c87814", "8cc70208", "90befffa", "a4506ceb", "bef9a3f7", "c67178f2" };
 
     // initial hash value [§5.3.3]
-    public static final String[] H_initial = new String[]{
-            "6a09e667", "bb67ae85", "3c6ef372", "a54ff53a", "510e527f", "9b05688c", "1f83d9ab", "5be0cd19" };
+//    public static final String[] H_initial = new String[]{
+//            "6a09e667", "bb67ae85", "3c6ef372", "a54ff53a", "510e527f", "9b05688c", "1f83d9ab", "5be0cd19" };
+    public static final Map<String, BigInteger> H_initial = Stream.of(new Object[][] {
+            { "a", new BigInteger("6a09e667",16) },
+            { "b", new BigInteger("bb67ae85",16) },
+            { "c", new BigInteger("3c6ef372",16) },
+            { "d", new BigInteger("a54ff53a",16) },
+            { "e", new BigInteger("510e527f",16) },
+            { "f", new BigInteger("9b05688c",16) },
+            { "g", new BigInteger("1f83d9ab",16) },
+            { "h", new BigInteger("5be0cd19",16) }
+    }).collect(Collectors.toMap(data -> (String) data[0], data -> (BigInteger) data[1]));
     // PRIVATE //
 
     /**
