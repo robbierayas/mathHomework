@@ -20,11 +20,10 @@ import java.util.stream.Stream;
 
 public class SHA256 {
 //https://www.movable-type.co.uk/scripts/sha256.html
-    public int numberOfBlocks = 0;
     public SHA256() {
     }
 
-    public String sha256UsingDigest(String message){
+    public static String sha256UsingDigest(String message){
 
         String output ="";
         try {
@@ -38,28 +37,27 @@ public class SHA256 {
         return output;
     }
 
-    //TODO
-    public String sha256(String message){
+    public static String sha256(String message){
 
-        String output ="";
-        BigInteger[][] preprocessedMessage = preprocessing(message);
-        Map<String, BigInteger> encodedhash = hashComputation(preprocessedMessage);
+        String output;
+        double l = ((double)message.length())/4 + 2; // length (in 32-bit integers) of msg + ‘1’ + appended length
+        int numberOfBlocks = (int) Math.ceil(l/16);  // number of 16-integer (512-bit) blocks required to hold 'l' ints
+        BigInteger[][] preprocessedMessage = preprocessing(message, numberOfBlocks);
+        Map<String, BigInteger> encodedhash = hashComputation(preprocessedMessage, numberOfBlocks);
         output = addOutput(encodedhash);
         return output;
     }
 
     @VisibleForTesting
-    BigInteger[][] preprocessing(String message) {
+    static BigInteger[][] preprocessing(String message, int numberOfBlocks) {
         message += new String(new int[]{128},0,1);  // add trailing '1' bit (+ 0's padding) to string [§5.1.1]
 
         // convert string msg into 512-bit blocks (array of 16 32-bit integers) [§5.2.1]
-        double l = ((double)message.length())/4 + 2; // length (in 32-bit integers) of msg + ‘1’ + appended length
-        numberOfBlocks = (int) Math.ceil(l/16);  // number of 16-integer (512-bit) blocks required to hold 'l' ints
         BigInteger[][] M = new BigInteger[numberOfBlocks][16];     // message M is N×16 array of 32-bit integers
 
         for (int i=0; i<numberOfBlocks; i++) {
             for (int j=0; j<16; j++) { // encode 4 chars per integer (64 per block), big-endian encoding
-                M[i][j] = charToBigInteger(message,i*64+j*4+0).shiftLeft(24)
+                M[i][j] = charToBigInteger(message,i*64+j*4).shiftLeft(24)
                             .or(charToBigInteger(message,i*64+j*4+1).shiftLeft(16)
                             .or(charToBigInteger(message,i*64+j*4+2).shiftLeft(8)
                             .or(charToBigInteger(message,i*64+j*4+3))));
@@ -69,13 +67,13 @@ public class SHA256 {
         // note: most significant word would be (len-1)*8 >>> 32, but since JS converts
         // bitwise-op args to 32 bits, we need to simulate this by arithmetic operators
         BigInteger lenHi = BigDecimal.valueOf(Math.floor(((message.length()-1)*8) / Math.pow(2, 32))).toBigInteger();
-        BigInteger lenLo = BigDecimal.valueOf(((message.length()-1)*8) >>> 0).toBigInteger();
+        BigInteger lenLo = BigDecimal.valueOf(((message.length()-1)*8)).toBigInteger();
         M[numberOfBlocks-1][14] = lenHi;
         M[numberOfBlocks-1][15] = lenLo;
         return M;
     }
 
-    BigInteger charToBigInteger(String message, int index){
+    static BigInteger charToBigInteger(String message, int index){
         BigInteger convertedInteger = new BigInteger("0");//new String(new int[]{0},0,1));
         Character charInput = null;
         if(message.length()>index){
@@ -89,7 +87,7 @@ public class SHA256 {
     }
 
     @VisibleForTesting
-    Map<String, BigInteger> hashComputation(BigInteger[][] preprocessedMessage) {
+    static Map<String, BigInteger> hashComputation(BigInteger[][] preprocessedMessage, int numberOfBlocks) {
         Map<String, BigInteger> previousRegisterValues = SHA256Constants.H_initial;
         for (int i=0; i<numberOfBlocks; i++) {
             BigInteger[] W = prepareMessageSchedule(i, preprocessedMessage);
@@ -97,43 +95,41 @@ public class SHA256 {
                     //done above
 
             // 3 - main loop (note '>>> 0' for 'addition modulo 2^32')
-            Map<String, BigInteger> hashValues = null;
+            Map<String, BigInteger> hashValues = previousRegisterValues;
             for (int t=0;t<64;t++) {
-                hashValues = processRound(previousRegisterValues, W,t);
+                hashValues = processRound(hashValues, W,t);
             }
             previousRegisterValues = computeIntermediateHash(previousRegisterValues, hashValues);
         }
         return previousRegisterValues;
     }
 
-    private BigInteger[] prepareMessageSchedule(int i, BigInteger[][] preprocessedMessage) {
+    static BigInteger[] prepareMessageSchedule(int i, BigInteger[][] preprocessedMessage) {
         BigInteger[] W = new BigInteger[64];
 
         // 1 - prepare message schedule 'W'
-        for (int t=0;  t<16; t++){
-            W[t] = preprocessedMessage[i][t];
-        }
+        System.arraycopy(preprocessedMessage[i], 0, W, 0, 16);
         for (int t=16; t<64; t++) {
-            W[t] = (lowerSigma1(W[t-2]).add(W[t-7]).add(lowerSigma0(W[t-15]).add(W[t-16])));//.shiftRight(0);
+            W[t] = BitwiseFunction.mask32(lowerSigma1(W[t-2]).add(W[t-7]).add(lowerSigma0(W[t-15]).add(W[t-16])));//.shiftRight(0);
         }
         return W;
     }
 
     @VisibleForTesting
-    Map<String, BigInteger> processRound(Map<String, BigInteger> registerValues, BigInteger[] messageSchedule, int round) {
+    static Map<String, BigInteger> processRound(Map<String, BigInteger> registerValues, BigInteger[] messageSchedule, int round) {
         BigInteger[] register = new BigInteger[8];
-        BigInteger T1 = registerValues.get("h").add(upperSigma1(registerValues.get("e")))
+        BigInteger T1 = BitwiseFunction.mask32(registerValues.get("h").add(upperSigma1(registerValues.get("e")))
                         .add(choice(registerValues.get("e"),registerValues.get("f"),registerValues.get("g")))
-                        .add(new BigInteger(SHA256Constants.K[round],16)).add(messageSchedule[round]);
-        BigInteger T2 = upperSigma0(registerValues.get("a")).add(majority(registerValues.get("a"),registerValues.get("b"),registerValues.get("c")));
+                        .add(new BigInteger(SHA256Constants.K[round],16)).add(messageSchedule[round]));
+        BigInteger T2 = BitwiseFunction.mask32(upperSigma0(registerValues.get("a")).add(majority(registerValues.get("a"),registerValues.get("b"),registerValues.get("c"))));
         register[7] = registerValues.get("g");
         register[6] = registerValues.get("f");
         register[5] = registerValues.get("e");
-        register[4] = registerValues.get("d").add(T1);
+        register[4] = BitwiseFunction.mask32(registerValues.get("d").add(T1));
         register[3] = registerValues.get("c");
         register[2] = registerValues.get("b");
         register[1] = registerValues.get("a");
-        register[0] = T1.add(T2);
+        register[0] = BitwiseFunction.mask32(T1.add(T2));
         registerValues = Stream.of(new Object[][] {
                 { "a", register[0] },
                 { "b", register[1] },
@@ -147,16 +143,16 @@ public class SHA256 {
         return registerValues;
     }
 
-    Map<String, BigInteger> computeIntermediateHash(Map<String, BigInteger> registerValues, Map<String, BigInteger> hashValues){
+    static Map<String, BigInteger> computeIntermediateHash(Map<String, BigInteger> registerValues, Map<String, BigInteger> hashValues){
         registerValues = Stream.of(new Object[][] {
-                { "a", registerValues.get("a").add(hashValues.get("a"))},
-                { "b", registerValues.get("b").add(hashValues.get("b"))},
-                { "c", registerValues.get("c").add(hashValues.get("c"))},
-                { "d", registerValues.get("d").add(hashValues.get("d"))},
-                { "e", registerValues.get("e").add(hashValues.get("e"))},
-                { "f", registerValues.get("f").add(hashValues.get("f"))},
-                { "g", registerValues.get("g").add(hashValues.get("g"))},
-                { "h", registerValues.get("h").add(hashValues.get("h"))}
+                { "a", BitwiseFunction.mask32(registerValues.get("a").add(hashValues.get("a")))},
+                { "b", BitwiseFunction.mask32(registerValues.get("b").add(hashValues.get("b")))},
+                { "c", BitwiseFunction.mask32(registerValues.get("c").add(hashValues.get("c")))},
+                { "d", BitwiseFunction.mask32(registerValues.get("d").add(hashValues.get("d")))},
+                { "e", BitwiseFunction.mask32(registerValues.get("e").add(hashValues.get("e")))},
+                { "f", BitwiseFunction.mask32(registerValues.get("f").add(hashValues.get("f")))},
+                { "g", BitwiseFunction.mask32(registerValues.get("g").add(hashValues.get("g")))},
+                { "h", BitwiseFunction.mask32(registerValues.get("h").add(hashValues.get("h")))}
         }).collect(Collectors.toMap(data -> (String) data[0], data -> (BigInteger) data[1]));
         //
 //            // 4 - compute the new intermediate hash value (note '>>> 0' for 'addition modulo 2^32')
@@ -173,14 +169,14 @@ public class SHA256 {
 
 
     @VisibleForTesting
-    String addOutput(Map<String, BigInteger> encodedhash) {
-        String outputString = "";
+    static String addOutput(Map<String, BigInteger> encodedhash) {
+        StringBuilder outputString = new StringBuilder();
         for (BigInteger h : encodedhash.values()){
             // convert H0..H7 to hex strings (with leading zeros)
-            String hString = h.toString(16);
+            StringBuilder hString = new StringBuilder(h.toString(16));
             while(hString.length() < 8)
-                hString = "0" + hString;
-            outputString += hString;
+                hString.insert(0, "0");
+            outputString.append(hString);
         }
 ////        ///////addOutput
 //        // convert H0..H7 to hex strings (with leading zeros)
@@ -190,50 +186,45 @@ public class SHA256 {
 //        const separator = opt.outFormat=='hex-w' ? ' ' : '';
 //
 //        return H.join(separator);
-        return outputString;
+        return outputString.toString();
     }
 
-    //TODO Logical Function4.1.2
     @VisibleForTesting
-    BigInteger upperSigma0(BigInteger x){
+    static BigInteger upperSigma0(BigInteger x){
         return BitwiseFunction.cyclicRightShift(x,32,2)
-                .or(BitwiseFunction.cyclicRightShift(x,32,13))
-                .or(BitwiseFunction.cyclicRightShift(x,32,22));
+                .xor(BitwiseFunction.cyclicRightShift(x,32,13))
+                .xor(BitwiseFunction.cyclicRightShift(x,32,22));
     }
 
     @VisibleForTesting
-    BigInteger upperSigma1(BigInteger x){
-        return BitwiseFunction.cyclicRightShift(x,32,2)
-                .or(BitwiseFunction.cyclicRightShift(x,32,13))
-                .or(BitwiseFunction.cyclicRightShift(x,32,22));
+    static BigInteger upperSigma1(BigInteger x){
+        return BitwiseFunction.cyclicRightShift(x,32,6)
+                .xor(BitwiseFunction.cyclicRightShift(x,32,11))
+                .xor(BitwiseFunction.cyclicRightShift(x,32,25));
     }
 
     @VisibleForTesting
-    BigInteger lowerSigma0(BigInteger x){
-        return BitwiseFunction.cyclicRightShift(x,32,2)
-                .or(BitwiseFunction.cyclicRightShift(x,32,13))
-                .or(BitwiseFunction.cyclicRightShift(x,32,22));
+    static BigInteger lowerSigma0(BigInteger x){
+        return BitwiseFunction.cyclicRightShift(x,32,7)
+                .xor(BitwiseFunction.cyclicRightShift(x,32,18))
+                .xor(x.shiftRight(3));
     }
 
     @VisibleForTesting
-    BigInteger lowerSigma1(BigInteger x){
-        return BitwiseFunction.cyclicRightShift(x,32,2)
-                .or(BitwiseFunction.cyclicRightShift(x,32,13))
-                .or(BitwiseFunction.cyclicRightShift(x,32,22));
+    static BigInteger lowerSigma1(BigInteger x){
+        return BitwiseFunction.cyclicRightShift(x,32,17)
+                .xor(BitwiseFunction.cyclicRightShift(x,32,19))
+                .xor(x.shiftRight(10));
     }
 
     @VisibleForTesting
-    BigInteger choice(BigInteger a, BigInteger b, BigInteger c){
-        return BitwiseFunction.cyclicRightShift(a,32,2)
-                .or(BitwiseFunction.cyclicRightShift(a,32,13))
-                .or(BitwiseFunction.cyclicRightShift(a,32,22));
+    static BigInteger choice(BigInteger a, BigInteger b, BigInteger c){
+        return (a.and(b)).xor(a.not().and(c));
     }
 
     @VisibleForTesting
-    BigInteger majority(BigInteger a, BigInteger b, BigInteger c){
-        return BitwiseFunction.cyclicRightShift(a,32,2)
-                .or(BitwiseFunction.cyclicRightShift(b,32,13))
-                .or(BitwiseFunction.cyclicRightShift(c,32,22));
+    static BigInteger majority(BigInteger a, BigInteger b, BigInteger c){
+        return (a.and(b)).xor(a.and(c)).xor(b.and(c));
     }
 
 }

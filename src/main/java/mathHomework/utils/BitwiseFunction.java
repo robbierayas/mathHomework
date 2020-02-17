@@ -25,9 +25,8 @@ public class BitwiseFunction {
             result= new String(Hex.decodeHex(s), java.nio.charset.StandardCharsets.ISO_8859_1);
         } catch (DecoderException e) {
             e.printStackTrace();
-        }finally {
-            return result;
         }
+        return result;
     }
 
     public static String byteArrayToHexString(byte[] byteArray){
@@ -35,9 +34,9 @@ public class BitwiseFunction {
     }
 
 
-    //TODO clean and test
+
     public static String hexToAscii(String hexStr) {
-        StringBuilder output = new StringBuilder("");
+        StringBuilder output = new StringBuilder();
 
         for (int i = 0; i < hexStr.length(); i += 2) {
             String str = hexStr.substring(i, i + 2);
@@ -51,23 +50,26 @@ public class BitwiseFunction {
         char[] chars = asciiStr.toCharArray();
         StringBuilder hex = new StringBuilder();
         for (char ch : chars) {
-            hex.append(Integer.toHexString((int) ch));
+            String hexString = Integer.toHexString(ch);
+            if(hexString.length()<2){
+                hexString = "0"+hexString;
+            }
+            hex.append(hexString);
         }
-
         return hex.toString();
     }
 
     public static String littleEndian(String message, int base) {
-        String output="";
+        StringBuilder output=new StringBuilder();
         //set string length by base
         int s=2;
         if(base==2){
             s=8;
         }
         for(int x=0;x<(message.length()/s);x++){
-            output=message.substring(s*x,s*(x+1))+output;
+            output.insert(0,message.substring(s*x,s*(x+1)));
         }
-        return output;
+        return output.toString();
     }
 
 
@@ -83,7 +85,6 @@ public class BitwiseFunction {
             boolean signByte = b == (byte) 0x00;
             if (skip && signByte) {
                 skipped++;
-                continue;
             } else if (skip) {
                 skip = false;
             }
@@ -91,8 +92,7 @@ public class BitwiseFunction {
         extractedBytes = Arrays.copyOfRange(extractedBytes, skipped,
                 extractedBytes.length);
         byte[] reversed = reverseArray(extractedBytes);
-        BigInteger reversedBigInteger = new BigInteger(new String(reversed),16);
-        return reversedBigInteger;
+        return new BigInteger(new String(reversed),16);
     }
 
     @VisibleForTesting
@@ -139,5 +139,8 @@ public class BitwiseFunction {
         return BigInteger.ZERO
                 .setBit(L)
                 .subtract(BigInteger.ONE);
+    }
+    public static BigInteger mask32(BigInteger a){
+        return a.and(ALL_ONES_BIG_INT);
     }
 }

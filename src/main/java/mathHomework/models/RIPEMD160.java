@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class RIPEMD160 {
-    public String[] messageBlocks;
-    public Map<String, BigInteger> initialValues = Stream.of(new Object[][] {
+    static public Map<String, BigInteger> initialValues = Stream.of(new Object[][] {
             { "Aleft", new BigInteger("67452301",16) },
             { "Bleft", new BigInteger("efcdab89",16) },
             { "Cleft", new BigInteger("98badcfe",16) },
@@ -28,28 +27,26 @@ public class RIPEMD160 {
     public RIPEMD160() {
     }
 
-    public String ripemd160(String message){
+    public static String ripemd160(String message){
         String paddedMessage=padMessage(message);
         //process message into chunks
-        this.messageBlocks = chunkMessage(paddedMessage);
+        String[] messageBlocks = chunkMessage(paddedMessage);
         //use 10 rounds of 16 bit ops on message block and buffer - in 2 parallel lines of 5
         Map<String, BigInteger> registerValues = initialValues;
         for(int round=0;round<5;round++){
             for(int j=0;j<16;j++){
-                registerValues=processRound(registerValues, round,j);
+                registerValues=processRound(registerValues, round,j,messageBlocks);
             }
         }
 
         //add output to message to form new buffer value
         //convert h0, h1, h2, h3 and h4 in hex, then add, little endian
-        String output=addOutput(registerValues);
-
         //output hash value is the final buffer value
-        return output;
+        return addOutput(registerValues);
     }
 
     @VisibleForTesting
-    String padMessage(String message) {
+    static String padMessage(String message) {
         //convert hex to bin
         String binaryMessage = BitwiseFunction.hexToBin(message);
         //get message length
@@ -59,9 +56,9 @@ public class RIPEMD160 {
         //append zeroes
         binaryMessage = String.format("%512s",String.format("%-448s", binaryMessage).replace(' ', '0')).replace(' ', '0');
         //get little endian of message
-        String litteEndian="";
+        StringBuilder litteEndian= new StringBuilder();
         for(int x=0;x<(messageLength.length()/32);x++) {
-            litteEndian=BitwiseFunction.littleEndian(messageLength.substring(x*32,(x+1)*32), 2)+litteEndian;
+            litteEndian.insert(0, BitwiseFunction.littleEndian(messageLength.substring(x * 32, (x + 1) * 32), 2));
         }
         //add little endian to message
         binaryMessage+=litteEndian;
@@ -69,7 +66,7 @@ public class RIPEMD160 {
     }
 
     @VisibleForTesting
-    String[] chunkMessage(String message) {
+    static String[] chunkMessage(String message) {
         //split message to 16 32-bit words
         String[] chunks = new String[16];
         for(int x=0;x<(message.length()/8);x++) {
@@ -78,7 +75,7 @@ public class RIPEMD160 {
         return chunks;
     }
     @VisibleForTesting
-    Map<String, BigInteger> processRound(Map<String, BigInteger> registerValues, int round, int bitOp) {
+    static Map<String, BigInteger> processRound(Map<String, BigInteger> registerValues, int round, int bitOp, String[] messageBlocks) {
         //get constants for this round
         int rho=RIPEMD160Constants.RHO.get(bitOp);
         int pi=(9*bitOp+5)%16;
@@ -120,7 +117,7 @@ public class RIPEMD160 {
     }
 
     @VisibleForTesting
-    BigInteger[] compress(Map<String, BigInteger> currentValues,String side, int function,BigInteger X, BigInteger K, int s) {
+    static BigInteger[] compress(Map<String, BigInteger> currentValues, String side, int function, BigInteger X, BigInteger K, int s) {
         //calculate A
         BigInteger a= currentValues.get("A"+side);
         BigInteger b= currentValues.get("B"+side);
@@ -161,7 +158,7 @@ public class RIPEMD160 {
     }
 
     @VisibleForTesting
-    String addOutput(Map<String, BigInteger> currentValues) {
+    static String addOutput(Map<String, BigInteger> currentValues) {
         //add output to message to form new buffer value
         //convert h0, h1, h2, h3 and h4 in hex, then add, little endian
         //output hash value is the final buffer value
@@ -186,13 +183,13 @@ public class RIPEMD160 {
         output[2]=d.add(eLeft).add(aRight).and(RIPEMD160Constants.MASK);
         output[3]=e.add(aLeft).add(bRight).and(RIPEMD160Constants.MASK);
         output[4]=a.add(bLeft).add(cRight).and(RIPEMD160Constants.MASK);
-        String outputString="";
+        StringBuilder outputString= new StringBuilder();
 
         for(BigInteger bigInteger: output){
-            outputString+=BitwiseFunction.littleEndian(bigInteger).toString(16);
+            outputString.append(BitwiseFunction.littleEndian(bigInteger).toString(16));
         }
 
-        return outputString;
+        return outputString.toString();
     }
 
 

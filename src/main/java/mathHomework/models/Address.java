@@ -1,31 +1,44 @@
 package mathHomework.models;
 
+import mathHomework.utils.Base58;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 public class Address {
     EncryptionKey encryptionKey;
     String address;
+    String pkHash;
 
     public Address(EncryptionKey encryptionKey){
         this.encryptionKey=encryptionKey;
-        this.address=hashAddressFromPublicKey();
+        this.pkHash = Address.pkHash(this.encryptionKey.getPublicKey());
+        this.address=Address.hashAddressFromPublicKey(this.pkHash);
     }
     //TODO
-    private String hashAddressFromPublicKey() {
-        String pkHash = pkHash();
-        byte[] checkSumBytes = getCheckSumBytes(pkHash);
-        String address = base58("00"+pkHash+new String(checkSumBytes));
+
+    static String pkHash(String publicKey) {
+        return RIPEMD160.ripemd160(SHA256.sha256(publicKey));
+    }
+
+    static private String hashAddressFromPublicKey(String pkHash) {
+        String pkHashShaTwice = pkHashShaTwice(pkHash);
+        byte[] checkSumBytes = getCheckSumBytes(AddressConstants.versionByte + pkHashShaTwice);
+        String address = base58(AddressConstants.versionByte +pkHash+new String(checkSumBytes));
         return address;
     }
 
-    private String pkHash() {
-        return "";
+    static String pkHashShaTwice(String pkHash) {
+        return SHA256.sha256(SHA256.sha256(pkHash));
     }
 
-    private byte[] getCheckSumBytes(String pkHash) {
-        return new byte[]{};
+    static byte[] getCheckSumBytes(String pkHashShaTwice) {
+        byte[] pkHashBytes = pkHashShaTwice.getBytes();
+        return Arrays.copyOfRange(pkHashBytes, 0, 4);
     }
 
-    private String base58(String s) {
-        return "";
+    static String base58(String s) {
+        return Base58.encode(s.getBytes(StandardCharsets.ISO_8859_1));
     }
 
 }

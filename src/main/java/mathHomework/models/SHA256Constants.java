@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 
 public final class SHA256Constants {
 
-    public static final BigInteger MASK = new BigInteger("FFFFFFFF",16);
     // constants [§4.2.2]
     public static final String[] K = new String[]{
             "428a2f98", "71374491", "b5c0fbcf", "e9b5dba5", "3956c25b", "59f111f1", "923f82a4", "ab1c5ed5",

@@ -1,5 +1,7 @@
 package mathHomework.models;
 
+import mathHomework.utils.BitwiseFunction;
+
 public class EncryptionKey {
     String publicKey;
     String privateKey;
@@ -12,7 +14,7 @@ public class EncryptionKey {
 
     public EncryptionKey(String publicKey, String privateKey) {
         this.publicKey = publicKey;
-        this.privateKey = privateKey;
+        this.privateKey = BitwiseFunction.hexToAscii(privateKey);
         this.privateKeyFound = true;
     }
 
@@ -38,5 +40,10 @@ public class EncryptionKey {
 
     public void setPrivateKeyFound(boolean privateKeyFound) {
         this.privateKeyFound = privateKeyFound;
+    }
+    //TODO
+    static public EncryptionKey createEncryptionKey(String privateKey){
+        String publicKey = "ecdsa";
+        return new EncryptionKey(publicKey, privateKey);
     }
 }
