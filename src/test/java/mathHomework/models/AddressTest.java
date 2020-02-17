@@ -22,28 +22,36 @@ public class AddressTest {
     @Test
     public void testPkHash(){
         String publicKey="0427d64b2de9f51ac1bf6b287088de3afcf67e8dd820848128cc27f71c18c5f8baefe71cc14052b4989e33a17f4795022f70313561cb3ef3d0b599c49933daa6fd";
-        String result = Address.pkHash(BitwiseFunction.hexToAscii(publicKey));
+        String result = Address.pkHash(BitwiseFunction.utf8ToUnicode(publicKey));
         assertEquals("f3cd5ddd30ad4d28f13cf195786f2e95e8914b22",result);
+    }
+
+
+    @Test
+    public void testHashAddressFromPKHash(){
+        String publicKey="f3cd5ddd30ad4d28f13cf195786f2e95e8914b22";
+        String result = Address.hashAddressFromPKHash((BitwiseFunction.utf8ToUnicode(publicKey)));
+        assertEquals("1PE7Djw8d1RthCXNwyYYNBv89mmgVezsvy",result);
     }
 
     @Test
     public void testPkHashShaTwice(){
         String pkHash="f3cd5ddd30ad4d28f13cf195786f2e95e8914b22";
-        String result = Address.pkHashShaTwice(BitwiseFunction.hexToAscii(pkHash));
+        String result = Address.pkHashShaTwice(AddressConstants.versionByteUnicode +BitwiseFunction.utf8ToUnicode(pkHash));
         assertEquals("5c8492ba9c962bd90185764df1d68e106828d9608ebd42a81280e3d7ba7f41f7",result);
     }
 
     @Test
     public void testGetCheckSumBytes(){
-        String pkHashShaTwice = "2bb273f7266ac8e76f07ee55a2ade19704d6177f6b01aee7bc9a346c664798df";
+        String pkHashShaTwice = "5c8492ba9c962bd90185764df1d68e106828d9608ebd42a81280e3d7ba7f41f7";
         byte[] result = Address.getCheckSumBytes(pkHashShaTwice);
-        byte[] expected = new byte[]{ 50, 98, 98, 50};
+        byte[] expected = new byte[]{ (byte)92, (byte) 132, (byte) 146, (byte) 186};
         assertArrayEquals(expected,result);
     }
 
     @Test
     public void testBase58(){
-        String byteAddress = "��]�0�M(�<��xo.���K\"\\���";
+        String byteAddress = "\0óÍ]Ý0\u00ADM(ñ<ñ\u0095xo.\u0095è\u0091K\"\\\u0084\u0092º";
         String result = Address.base58(byteAddress);
         assertEquals("PE7Djw8d1RthCXNwyYYNBv89mmgVezsvy",result);
     }

@@ -1,8 +1,5 @@
 package mathHomework.utils;
 
-import mathHomework.models.RIPEMD160;
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
@@ -54,17 +51,29 @@ public class BitwiseFunctionTest {
     }
 
     @Test
-    void testHexToAscii(){
+    void testUtf8ToUnicode(){
         String hexString="0427d64b2de9f51ac1bf6b287088de3afcf67e8dd820848128cc27f71c18c5f8baefe71cc14052b4989e33a17f4795022f70313561cb3ef3d0b599c49933daa6fd";
-        String result = BitwiseFunction.hexToAscii(hexString);
+        String result = BitwiseFunction.utf8ToUnicode(hexString);
         assertEquals("\u0004'ÖK-éõ\u001AÁ¿k(p\u0088Þ:üö~\u008DØ \u0084\u0081(Ì'÷\u001C\u0018Åøºïç\u001CÁ@R´\u0098\u009E3¡\u007FG\u0095\u0002/p15aË>óÐµ\u0099Ä\u00993Ú¦ý",result);
+        String hexString2="f3cd5ddd30ad4d28f13cf195786f2e95e8914b22";
+        String result2 = BitwiseFunction.utf8ToUnicode(hexString2);
+        assertEquals("óÍ]Ý0\u00ADM(ñ<ñ\u0095xo.\u0095è\u0091K\"",result2);
+        String hexString3="00";
+        String result3 = BitwiseFunction.utf8ToUnicode(hexString3);
+        assertEquals("\0",result3);
     }
 
     @Test
-    void testAsciiToHex(){
-        String asciiString="\u0004'ÖK-éõ\u001AÁ¿k(p\u0088Þ:üö~\u008DØ \u0084\u0081(Ì'÷\u001C\u0018Åøºïç\u001CÁ@R´\u0098\u009E3¡\u007FG\u0095\u0002/p15aË>óÐµ\u0099Ä\u00993Ú¦ý";
-        String result = BitwiseFunction.asciiToHex(asciiString);
+    void testUnicodeToUtf8(){
+        String unicodeString="\u0004'ÖK-éõ\u001AÁ¿k(p\u0088Þ:üö~\u008DØ \u0084\u0081(Ì'÷\u001C\u0018Åøºïç\u001CÁ@R´\u0098\u009E3¡\u007FG\u0095\u0002/p15aË>óÐµ\u0099Ä\u00993Ú¦ý";
+        String result = BitwiseFunction.unicodeToUtf8(unicodeString);
         assertEquals("0427d64b2de9f51ac1bf6b287088de3afcf67e8dd820848128cc27f71c18c5f8baefe71cc14052b4989e33a17f4795022f70313561cb3ef3d0b599c49933daa6fd",result);
+        String unicodeString2="óÍ]Ý0\u00ADM(ñ<ñ\u0095xo.\u0095è\u0091K\"";
+        String result2 = BitwiseFunction.unicodeToUtf8(unicodeString2);
+        assertEquals("f3cd5ddd30ad4d28f13cf195786f2e95e8914b22",result2);
+        String unicodeString3="\0óÍ]Ý0\u00ADM(ñ<ñ\u0095xo.\u0095è\u0091K\"";
+        String result3 = BitwiseFunction.unicodeToUtf8(unicodeString3);
+        assertEquals("00f3cd5ddd30ad4d28f13cf195786f2e95e8914b22",result3);
     }
 
 

@@ -35,7 +35,8 @@ public class BitwiseFunction {
 
 
 
-    public static String hexToAscii(String hexStr) {
+    public static String utf8ToUnicode(String hexStr) {
+
         StringBuilder output = new StringBuilder();
 
         for (int i = 0; i < hexStr.length(); i += 2) {
@@ -46,7 +47,7 @@ public class BitwiseFunction {
         return output.toString();
     }
 
-    public static String asciiToHex(String asciiStr) {
+    public static String unicodeToUtf8(String asciiStr) {
         char[] chars = asciiStr.toCharArray();
         StringBuilder hex = new StringBuilder();
         for (char ch : chars) {

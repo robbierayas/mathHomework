@@ -27,11 +27,16 @@ public class SHA256 {
 
         String output ="";
         try {
+
+            System.out.println("Default Charset=" + Charset.defaultCharset());
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            String messagedecoded = new String(message.getBytes(StandardCharsets.ISO_8859_1));
             byte[] encodedhash = digest.digest(
                     message.getBytes(StandardCharsets.ISO_8859_1));
             output = Hex.encodeHexString(encodedhash,true);
-        } catch (NoSuchAlgorithmException e) {
+            String mHessagedecoded = new String(Hex.decodeHex(output));
+            String yo="0";
+        } catch (NoSuchAlgorithmException | DecoderException e) {
             e.printStackTrace();
         }
         return output;

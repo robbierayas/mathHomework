@@ -14,7 +14,7 @@ public class EncryptionKey {
 
     public EncryptionKey(String publicKey, String privateKey) {
         this.publicKey = publicKey;
-        this.privateKey = BitwiseFunction.hexToAscii(privateKey);
+        this.privateKey = BitwiseFunction.utf8ToUnicode(privateKey);
         this.privateKeyFound = true;
     }
 
