@@ -37,6 +37,10 @@ class SHA256Test {
         assertEquals("f6c4d6736f912ffebe65fb1497aac2a111d037883f39b5d72ea0d39f216ed368",result);
         String result2 = SHA256.sha256(BitwiseFunction.hexToAscii("0427d64b2de9f51ac1bf6b287088de3afcf67e8dd820848128cc27f71c18c5f8baefe71cc14052b4989e33a17f4795022f70313561cb3ef3d0b599c49933daa6fd"));
         assertEquals("f6c4d6736f912ffebe65fb1497aac2a111d037883f39b5d72ea0d39f216ed368",result2);
+        String result3 = SHA256.sha256("f6c4d6736f912ffebe65fb1497aac2a111d037883f39b5d72ea0d39f216ed368");
+        assertEquals("9c618e84ba7bb0b6d208f7f57d9b92bdfb929efba53a3668469115a96105db90",result3);
+        String result4 = SHA256.sha256(BitwiseFunction.hexToAscii("9c618e84ba7bb0b6d208f7f57d9b92bdfb929efba53a3668469115a96105db90"));
+        assertEquals("5c8492ba9c962bd90185764df1d68e106828d9608ebd42a81280e3d7ba7f41f7",result4);
     }
 
     @Test

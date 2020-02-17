@@ -13,7 +13,7 @@ public class Address {
     public Address(EncryptionKey encryptionKey){
         this.encryptionKey=encryptionKey;
         this.pkHash = Address.pkHash(this.encryptionKey.getPublicKey());
-        this.address=Address.hashAddressFromPublicKey(this.pkHash);
+        this.address=Address.hashAddressFromPKHash(this.pkHash);
     }
     //TODO
 
@@ -21,7 +21,7 @@ public class Address {
         return RIPEMD160.ripemd160(SHA256.sha256(publicKey));
     }
 
-    static private String hashAddressFromPublicKey(String pkHash) {
+    static private String hashAddressFromPKHash(String pkHash) {
         String pkHashShaTwice = pkHashShaTwice(pkHash);
         byte[] checkSumBytes = getCheckSumBytes(AddressConstants.versionByte + pkHashShaTwice);
         String address = base58(AddressConstants.versionByte +pkHash+new String(checkSumBytes));

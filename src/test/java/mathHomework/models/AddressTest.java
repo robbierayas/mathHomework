@@ -28,9 +28,9 @@ public class AddressTest {
 
     @Test
     public void testPkHashShaTwice(){
-        String pkHash="0427d64b2de9f51ac1bf6b287088de3afcf67e8dd820848128cc27f71c18c5f8baefe71cc14052b4989e33a17f4795022f70313561cb3ef3d0b599c49933daa6fd";
+        String pkHash="f3cd5ddd30ad4d28f13cf195786f2e95e8914b22";
         String result = Address.pkHashShaTwice(BitwiseFunction.hexToAscii(pkHash));
-        assertEquals("f3cd5ddd30ad4d28f13cf195786f2e95e8914b22",result);
+        assertEquals("5c8492ba9c962bd90185764df1d68e106828d9608ebd42a81280e3d7ba7f41f7",result);
     }
 
     @Test
