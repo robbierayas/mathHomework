@@ -7,16 +7,22 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Set needed version of JCuda here -->
+        <jcuda.version>10.2.0</jcuda.version>
+        <!-- Set needed version of JCudnn here -->
+        <jcudnn.version>10.2.0</jcudnn.version>
+        <github.global.server>github</github.global.server>
     </properties>
     <groupId>groupId</groupId>
     <artifactId>mathHomework</artifactId>
     <version>1.0-SNAPSHOT</version>
     <build>
-        <defaultGoal>test
+        <defaultGoal>test, package
         </defaultGoal>
 
-        <plugins>
 
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -25,7 +31,58 @@
                 <dependencies>
                 </dependencies>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.9</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <stripVersion>true</stripVersion>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--usage of exec plugin-->
+            <!--mvn exec:exec -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.3.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-Djava.library.path=${project.build.directory}/lib</argument>
+                        <argument>-classpath</argument>
+                        <!-- automatically creates the classpath using all project dependencies,
+                                   also adding the project build directory -->
+                        <classpath/>
+                        <!--Replace with your class reference if any -->
+                        <argument>java.mathHomework.controllers.MainController</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -46,45 +103,111 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jcuda</groupId>
-            <artifactId>jcuda</artifactId>
-            <version>10.1.0</version>
-        </dependency>
+        <!--JCuda Java libs-->
         <dependency>
             <groupId>org.jcuda</groupId>
             <artifactId>jcublas</artifactId>
-            <version>10.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jcuda</groupId>
-            <artifactId>jcufft</artifactId>
-            <version>10.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jcuda</groupId>
-            <artifactId>jcusparse</artifactId>
-            <version>10.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jcuda</groupId>
-            <artifactId>jcusolver</artifactId>
-            <version>10.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jcuda</groupId>
-            <artifactId>jcurand</artifactId>
-            <version>10.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jcuda</groupId>
-            <artifactId>jnvgraph</artifactId>
-            <version>10.1.0</version>
+            <version>10.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.jcuda</groupId>
             <artifactId>jcudnn</artifactId>
-            <version>10.1.0</version>
+            <version>${jcudnn.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jcuda</groupId>
+            <artifactId>jcuda</artifactId>
+            <version>${jcuda.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jcuda</groupId>
+            <artifactId>jcufft</artifactId>
+            <version>${jcuda.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jcuda</groupId>
+            <artifactId>jcurand</artifactId>
+            <version>${jcuda.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jcuda</groupId>
+            <artifactId>jcusparse</artifactId>
+            <version>${jcuda.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jcuda</groupId>
+            <artifactId>jcusolver</artifactId>
+            <version>${jcuda.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jcuda</groupId>
+            <artifactId>jnvgraph</artifactId>
+            <version>${jcuda.version}</version>
         </dependency>
     </dependencies>
+    <profiles>
+        <profile>
+            <id>unix-x86_64</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <arch>amd64</arch>
+                </os>
+            </activation>
+            <properties>
+                <libJ.version>linux-x86_64</libJ.version>
+            </properties>
+            <!--JCuda native so libs-->
+            <dependencies>
+                <dependency>
+                    <groupId>org.jcuda</groupId>
+                    <artifactId>jcublas-natives</artifactId>
+                    <version>${jcuda.version}</version>
+                    <classifier>${libJ.version}</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.jcuda</groupId>
+                    <artifactId>jcudnn-natives</artifactId>
+                    <version>${jcudnn.version}</version>
+                    <classifier>${libJ.version}</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.jcuda</groupId>
+                    <artifactId>jcuda-natives</artifactId>
+                    <version>${jcuda.version}</version>
+                    <classifier>${libJ.version}</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.jcuda</groupId>
+                    <artifactId>jcufft-natives</artifactId>
+                    <version>${jcuda.version}</version>
+                    <classifier>${libJ.version}</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.jcuda</groupId>
+                    <artifactId>jcurand-natives</artifactId>
+                    <version>${jcuda.version}</version>
+                    <classifier>${libJ.version}</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.jcuda</groupId>
+                    <artifactId>jcusparse-natives</artifactId>
+                    <version>${jcuda.version}</version>
+                    <classifier>${libJ.version}</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.jcuda</groupId>
+                    <artifactId>jcusolver-natives</artifactId>
+                    <version>${jcuda.version}</version>
+                    <classifier>${libJ.version}</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.jcuda</groupId>
+                    <artifactId>jnvgraph-natives</artifactId>
+                    <version>${jcuda.version}</version>
+                    <classifier>${libJ.version}</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
