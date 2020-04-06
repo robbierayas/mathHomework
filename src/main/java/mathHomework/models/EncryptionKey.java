@@ -2,6 +2,9 @@ package mathHomework.models;
 
 import mathHomework.utils.BitwiseFunction;
 
+import java.math.BigInteger;
+import java.util.Random;
+
 public class EncryptionKey {
     String publicKey;
     String privateKey;
@@ -44,6 +47,12 @@ public class EncryptionKey {
     //TODO
     static public EncryptionKey createEncryptionKey(String privateKey){
         String publicKey = "ecdsa";
+        return new EncryptionKey(publicKey, privateKey);
+    }
+
+    static public EncryptionKey createEncryptionKey(){
+        String privateKey = new BigInteger(256, new Random()).toString();
+        String publicKey = ECDSA.ecdsa(privateKey);
         return new EncryptionKey(publicKey, privateKey);
     }
 }

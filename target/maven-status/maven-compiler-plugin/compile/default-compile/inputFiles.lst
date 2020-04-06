@@ -4,6 +4,8 @@
 /home/robbie/IdeaProjects/mathHomework/src/main/java/mathHomework/models/SHA256.java
 /home/robbie/IdeaProjects/mathHomework/src/main/java/mathHomework/models/Address.java
 /home/robbie/IdeaProjects/mathHomework/src/main/java/mathHomework/models/RIPEMD160.java
+/home/robbie/IdeaProjects/mathHomework/src/main/java/mathHomework/utils/Base58.java
+/home/robbie/IdeaProjects/mathHomework/src/main/java/mathHomework/models/AddressConstants.java
 /home/robbie/IdeaProjects/mathHomework/src/main/java/mathHomework/models/SHA256Constants.java
 /home/robbie/IdeaProjects/mathHomework/src/main/java/mathHomework/models/EncryptionKey.java
 /home/robbie/IdeaProjects/mathHomework/src/main/java/mathHomework/models/RIPEMD160Constants.java

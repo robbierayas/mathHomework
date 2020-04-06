@@ -1,8 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: mathHomework.models.SHA256Test
 -------------------------------------------------------------------------------
-Tests run: 15, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.143 s <<< FAILURE! - in mathHomework.models.SHA256Test
-testSHA256  Time elapsed: 0.032 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <f6c4d6736f912ffebe65fb1497aac2a111d037883f39b5d72ea0d39f216ed368> but was: <102a2ee88419b173693d32289ce7e22bedf3f3c763660aaf5828bfb188622d2d>
-	at mathHomework.models.SHA256Test.testSHA256(SHA256Test.java:39)
-
+Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.137 s - in mathHomework.models.SHA256Test
